@@ -28,6 +28,7 @@ Console.WriteLine("F Show Assignments");
 Console.WriteLine("G Statistics");
 Console.WriteLine("H Filter Creatures");
 Console.WriteLine("I Show average danger level");
+Console.WriteLine("J Show Creatures sorted by danger level");
 Console.WriteLine("X Exit");
 
 List<Assignment> assignments = new List<Assignment>();
@@ -146,6 +147,14 @@ while (true)
             }
 
             Console.WriteLine($"Total Creatures: {creatures.Count}");            
+            break;
+        case "j":
+            var sortedCreatures = creatures.OrderBy(c => c.DangerLevel).ToList();
+
+            foreach (var c in sortedCreatures)
+            {
+                c.PrintInfo();
+            }
             break;
         case "x":
             Console.WriteLine("Exiting...");
