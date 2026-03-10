@@ -19,23 +19,24 @@ students.Add(new Student("Ron Weasley", "Gryffindor", 11));
 students.Add(new Student("Draco Malfoy", "Slytherin", 11));
 students.Add(new Student("Luna Lovegood", "Ravenclaw", 11));
 
-Console.WriteLine("1 Add Creature");
-Console.WriteLine("2 Show Creatures");
-Console.WriteLine("3 Add Student");
-Console.WriteLine("4 Show Students");
-Console.WriteLine("5 Assign Creature");
-Console.WriteLine("6 Show Assignments");
-Console.WriteLine("7 Statistics");
-Console.WriteLine("8 Filter Creatures");
-Console.WriteLine("9 Exit");
+Console.WriteLine("A Add Creature");
+Console.WriteLine("B Show Creatures");
+Console.WriteLine("C Add Student");
+Console.WriteLine("D Show Students");
+Console.WriteLine("E Assign Creature");
+Console.WriteLine("F Show Assignments");
+Console.WriteLine("G Statistics");
+Console.WriteLine("H Filter Creatures");
+Console.WriteLine("I Show average danger level");
+Console.WriteLine("X Exit");
 
 List<Assignment> assignments = new List<Assignment>();
 while (true)
 {
-    string? input = Console.ReadLine();
+    string? input = Console.ReadLine().ToLower();
     switch (input)
     {
-        case "1":
+        case "a":
             Console.WriteLine("Enter Creature Name:");
             string? name = Console.ReadLine();
             Console.WriteLine("Enter Creature Species:");
@@ -54,14 +55,14 @@ while (true)
                 Console.WriteLine("Invalid danger level.");
             }
             break;
-        case "2":
+        case "b":
             foreach (Creature c in creatures)
             {
                 c.PrintInfo();
                 Console.WriteLine();
             }
             break;
-        case "3":
+        case "c":
             Console.WriteLine("Enter Student Name:");
             string studentName = Console.ReadLine();
             Console.WriteLine("Enter Student House:");
@@ -70,14 +71,14 @@ while (true)
             int year = int.Parse(Console.ReadLine());
             students.Add(new Student(studentName, house, year));
             break;
-        case "4":
+        case "d":
             foreach (Student s in students)
             {
                 s.PrintInfo();
                 Console.WriteLine();
             }
             break;
-        case "5":
+        case "e":
             Console.WriteLine("Enter Student Name:");
             string sName = Console.ReadLine();
             Console.WriteLine("Enter Creature Name:");
@@ -95,18 +96,18 @@ while (true)
                 Console.WriteLine("Student or Creature not found.");
             }
             break;
-        case "6":
+        case "f":
             foreach (Assignment a in assignments)
             {
                 Console.WriteLine($"Student: {a.student.Name}, Creature: {a.creature.Name}");
             }
             break;
-        case "7":
+        case "g":
             Console.WriteLine($"Total Creatures: {creatures.Count}");
             Console.WriteLine($"Total Students: {students.Count}");
             Console.WriteLine($"Total Assignments: {assignments.Count}");
             break;
-        case "8":
+        case "h":
             Console.WriteLine("Enter Danger Level to Filter (Low, Medium, High, VeryHigh):");
             string? filterInput = Console.ReadLine();
 
@@ -131,11 +132,22 @@ while (true)
             }
             else
             {
-                Console.WriteLine("Invalid danger level.");
+                throw new ArgumentException("Invalid danger level.");
             }
 
             break;       
-        case "9":
+        case "i":
+            double averageDangerLevel = creatures.Average(c => (int)c.DangerLevel);
+            Console.WriteLine($"Average Danger Level: {averageDangerLevel:F2}");
+            
+            Creature mostDangerous = creatures.OrderByDescending(c => c.DangerLevel).FirstOrDefault();
+            if (mostDangerous != null)            {
+                Console.WriteLine($"Most Dangerous Creature: {mostDangerous.Name} ({mostDangerous.DangerLevel})");
+            }
+
+            Console.WriteLine($"Total Creatures: {creatures.Count}");            
+            break;
+        case "x":
             Console.WriteLine("Exiting...");
             continue;  
         default:
