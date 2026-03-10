@@ -21,14 +21,17 @@ students.Add(new Student("Luna Lovegood", "Ravenclaw", 11));
 
 Console.WriteLine("A Add Creature");
 Console.WriteLine("B Show Creatures");
-Console.WriteLine("C Add Student");
-Console.WriteLine("D Show Students");
-Console.WriteLine("E Assign Creature");
-Console.WriteLine("F Show Assignments");
-Console.WriteLine("G Statistics");
-Console.WriteLine("H Filter Creatures");
-Console.WriteLine("I Show average danger level");
-Console.WriteLine("J Show Creatures sorted by danger level");
+Console.WriteLine("C Find Creature by Name");
+Console.WriteLine("D Add Student");
+Console.WriteLine("E Show Students");
+Console.WriteLine("F Find Student by Name");
+Console.WriteLine("G Assign Creature");
+Console.WriteLine("H Show Assignments");
+Console.WriteLine("I Statistics");
+Console.WriteLine("J Filter Creatures");
+Console.WriteLine("K Show average danger level");
+Console.WriteLine("L Show Creatures sorted by danger level");
+Console.WriteLine("M Show Creatures sorted by age");
 Console.WriteLine("X Exit");
 
 List<Assignment> assignments = new List<Assignment>();
@@ -37,6 +40,7 @@ while (true)
     string? input = Console.ReadLine().ToLower();
     switch (input)
     {
+        //add creature
         case "a":
             Console.WriteLine("Enter Creature Name:");
             string? name = Console.ReadLine();
@@ -56,6 +60,7 @@ while (true)
                 Console.WriteLine("Invalid danger level.");
             }
             break;
+        //show creatures
         case "b":
             foreach (Creature c in creatures)
             {
@@ -63,7 +68,22 @@ while (true)
                 Console.WriteLine();
             }
             break;
+        //find creature by name
         case "c":
+            Console.WriteLine("Enter Creature Name:");
+            string? cName = Console.ReadLine();
+            Creature creatureInfo = creatures.Find(c => c.Name == cName);
+            if (creatureInfo != null)
+            {
+                creatureInfo.PrintInfo();
+            }
+            else
+            {
+                Console.WriteLine("Creature not found.");
+            }
+            break;
+        //add student
+        case "d":
             Console.WriteLine("Enter Student Name:");
             string studentName = Console.ReadLine();
             Console.WriteLine("Enter Student House:");
@@ -72,20 +92,39 @@ while (true)
             int year = int.Parse(Console.ReadLine());
             students.Add(new Student(studentName, house, year));
             break;
-        case "d":
+        //show students
+        case "e":
             foreach (Student s in students)
             {
                 s.PrintInfo();
                 Console.WriteLine();
             }
             break;
-        case "e":
+        //find student by name
+        case "f":
             Console.WriteLine("Enter Student Name:");
-            string sName = Console.ReadLine();
+            string? sName = Console.ReadLine();
+            Student studentInfo = students.Find(s => s.Name == sName);
+            if (studentInfo != null)
+            {
+                studentInfo.PrintInfo();
+            }
+            else
+            {
+                Console.WriteLine("Student not found.");
+            }
+            break;
+        //assign creature
+        case "g":
+            Console.WriteLine("Enter Student Name:");
+            string stName = Console.ReadLine();
+
             Console.WriteLine("Enter Creature Name:");
-            string cName = Console.ReadLine();
-            Student student = students.Find(s => s.Name == sName);
-            Creature creature = creatures.Find(c => c.Name == cName);
+            string crName = Console.ReadLine();
+
+            Student student = students.Find(s => s.Name == stName);
+            Creature creature = creatures.Find(c => c.Name == crName);
+
             if (student != null && creature != null)
             {
                 Assignment assignment = new Assignment(student, creature);
@@ -97,18 +136,22 @@ while (true)
                 Console.WriteLine("Student or Creature not found.");
             }
             break;
-        case "f":
+        //show assignments
+        case "h":
+            Console.WriteLine("Current Assignments:");
             foreach (Assignment a in assignments)
             {
                 Console.WriteLine($"Student: {a.student.Name}, Creature: {a.creature.Name}");
             }
             break;
-        case "g":
+        //statistics
+        case "i":
             Console.WriteLine($"Total Creatures: {creatures.Count}");
             Console.WriteLine($"Total Students: {students.Count}");
             Console.WriteLine($"Total Assignments: {assignments.Count}");
             break;
-        case "h":
+        //filter creatures
+        case "j":
             Console.WriteLine("Enter Danger Level to Filter (Low, Medium, High, VeryHigh):");
             string? filterInput = Console.ReadLine();
 
@@ -136,8 +179,9 @@ while (true)
                 throw new ArgumentException("Invalid danger level.");
             }
 
-            break;       
-        case "i":
+            break;   
+        //show average danger level    
+        case "k":
             double averageDangerLevel = creatures.Average(c => (int)c.DangerLevel);
             Console.WriteLine($"Average Danger Level: {averageDangerLevel:F2}");
             
@@ -148,10 +192,20 @@ while (true)
 
             Console.WriteLine($"Total Creatures: {creatures.Count}");            
             break;
-        case "j":
-            var sortedCreatures = creatures.OrderBy(c => c.DangerLevel).ToList();
+        //show creatures sorted by danger level
+        case "l":
+            var sortedByDangerLevel = creatures.OrderBy(c => c.DangerLevel).ToList();
 
-            foreach (var c in sortedCreatures)
+            foreach (var c in sortedByDangerLevel)
+            {
+                c.PrintInfo();
+            }
+            break;
+        //show creatures sorted by age
+        case "m":
+            var sortedByAge = creatures.OrderByDescending(c => c.Age).ToList();
+
+            foreach (var c in sortedByAge)
             {
                 c.PrintInfo();
             }
