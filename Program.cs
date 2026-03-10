@@ -5,12 +5,12 @@ Console.OutputEncoding = System.Text.Encoding.UTF8;
 Console.Clear();
 
 List <Creature> creatures = new List<Creature>();
-creatures.Add(new Creature("Norbert", "Norwegian Ridgeback", "High", 2));
-creatures.Add(new Creature("Buckbeak", "Hippogriff", "Medium", 5));
-creatures.Add(new Creature("Aragog", "Acromantula", "High", 10));
-creatures.Add(new Creature("Fawkes", "Phoenix", "Low", 500));
-creatures.Add(new Creature("Fluffy", "Three-Headed Dog", "High", 3));
-creatures.Add(new Creature("Dobby", "House Elf", "Low", 100));
+creatures.Add(new Creature("Norbert", "Norwegian Ridgeback", DangerLevel.High, 2));
+creatures.Add(new Creature("Buckbeak", "Hippogriff", DangerLevel.Medium, 5));
+creatures.Add(new Creature("Aragog", "Acromantula", DangerLevel.High, 10));
+creatures.Add(new Creature("Fawkes", "Phoenix", DangerLevel.Low, 500));
+creatures.Add(new Creature("Fluffy", "Three-Headed Dog", DangerLevel.VeryHigh, 3));
+creatures.Add(new Creature("Dobby", "House Elf", DangerLevel.Low, 100));
 
 List <Student> students = new List<Student>();
 students.Add(new Student("Harry Potter", "Gryffindor", 11));
@@ -26,7 +26,8 @@ Console.WriteLine("4 Show Students");
 Console.WriteLine("5 Assign Creature");
 Console.WriteLine("6 Show Assignments");
 Console.WriteLine("7 Statistics");
-Console.WriteLine("8 Exit");
+Console.WriteLine("8 Filter Creatures");
+Console.WriteLine("9 Exit");
 
 List<Assignment> assignments = new List<Assignment>();
 while (true)
@@ -40,10 +41,18 @@ while (true)
             Console.WriteLine("Enter Creature Species:");
             string? species = Console.ReadLine();
             Console.WriteLine("Enter Creature Danger Level:");
-            string? dangerLevel = Console.ReadLine();
+            string? dangerInput = Console.ReadLine();
             Console.WriteLine("Enter Creature Age:");
             int age = int.Parse(Console.ReadLine());
-            creatures.Add(new Creature(name, species, dangerLevel, age));
+            if (Enum.TryParse<DangerLevel>(dangerInput, true, out DangerLevel dangerLevel))
+            {
+                creatures.Add(new Creature(name, species, dangerLevel, age));
+                Console.WriteLine("Creature added.");
+            }
+            else
+            {
+                Console.WriteLine("Invalid danger level.");
+            }
             break;
         case "2":
             foreach (Creature c in creatures)
@@ -98,6 +107,35 @@ while (true)
             Console.WriteLine($"Total Assignments: {assignments.Count}");
             break;
         case "8":
+            Console.WriteLine("Enter Danger Level to Filter (Low, Medium, High, VeryHigh):");
+            string? filterInput = Console.ReadLine();
+
+            if (Enum.TryParse<DangerLevel>(filterInput, true, out DangerLevel filterLevel))
+            {
+                var filteredCreatures = creatures
+                    .Where(c => c.DangerLevel == filterLevel)
+                    .ToList();
+
+                if (filteredCreatures.Count > 0)
+                {
+                    foreach (Creature c in filteredCreatures)
+                    {
+                        c.PrintInfo();
+                        Console.WriteLine();
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No creatures found with that danger level.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid danger level.");
+            }
+
+            break;       
+        case "9":
             Console.WriteLine("Exiting...");
             continue;  
         default:

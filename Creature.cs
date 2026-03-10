@@ -6,10 +6,10 @@ public class Creature
 {
     public string Name { get; set; }
     public string Species { get; set; }
-    public string DangerLevel { get; set; }
+    public DangerLevel DangerLevel { get; set; }
     public int Age { get; set; }
 
-    public Creature(string name, string species, string dangerLevel, int age)
+    public Creature(string name, string species, DangerLevel dangerLevel, int age)
     {
         Name = name;
         Species = species;
