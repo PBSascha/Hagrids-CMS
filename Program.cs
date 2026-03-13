@@ -1,4 +1,4 @@
-﻿using Hagrids_CMS;
+﻿using Hagrids_CMS.Models;
 using Hagrids_CMS.Commands;
 using Hagrids_CMS.Core;
 using System.Reflection;

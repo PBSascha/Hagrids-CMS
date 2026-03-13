@@ -1,4 +1,5 @@
 using System;
+using Hagrids_CMS.Models;
 namespace Hagrids_CMS.Core;
 
 public class DataStore
